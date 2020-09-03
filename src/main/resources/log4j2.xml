@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration>
+   <Appenders>
+       <Console name="STDOUT" target="SYSTEM_OUT">
+           <PatternLayout pattern="%X{firmName} %X{user} %d{ISO8601} %X{clientIP} %X{userAgent} %X{sessionId} [%t] [%c{1}:%L] %p - %m%n"/>
+       </Console>
+       <RollingFile
+               name="AppLogs"
+               fileName="log/AppLogs.log"
+               filePattern="log/AppLogs-%d{yyyy-MM-dd-HH}-%i.log"
+               append="false">
+           <PatternLayout>
+               <Pattern>%X{firmName} %X{user} %d{ISO8601} %X{clientIP} %X{userAgent} %X{sessionId} [%t] [%c{1}:%L] %p - %m%n</Pattern>
+           </PatternLayout>
+           <Policies>
+               <TimeBasedTriggeringPolicy />
+               <SizeBasedTriggeringPolicy size="100 MB"/>
+           </Policies>
+           <DefaultRolloverStrategy max="2" />
+       </RollingFile>
+    </Appenders>
+    <Loggers>
+       <!-- <Logger name="org.apache.log4j.xml" level="all"/>-->
+        <logger name="org.quartz" level= "all" additivity="false">
+            <appender-ref ref="STDOUT"/>
+            <appender-ref ref="AppLogs"/>
+        </logger>
+        <root level="debug">
+            <appender-ref ref="STDOUT"/>
+          <appender-ref ref="AppLogs"/>
+        </root>
+    </Loggers>
+</Configuration>
